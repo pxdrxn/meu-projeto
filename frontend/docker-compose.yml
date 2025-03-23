@@ -1,0 +1,10 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    stdin_open: true  # Mantém o terminal interativo aberto
+    tty: true         # Aloca um terminal TTY
