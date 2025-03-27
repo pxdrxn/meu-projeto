@@ -1,11 +1,53 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User'); // Ajuste o caminho conforme sua configuração
+const User = require('../models/User'); // Ajuste o caminho conforme necessário
 
 const router = express.Router();
 
-// Rota de Cadastro
+/**
+ * @swagger
+ * /api/auth/cadastro:
+ *   post:
+ *     summary: Cadastra um novo usuário
+ *     tags: [Autenticação]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nome:
+ *                 type: string
+ *                 example: João Silva
+ *               email:
+ *                 type: string
+ *                 example: joao@example.com
+ *               senha:
+ *                 type: string
+ *                 example: 123456
+ *               tipo:
+ *                 type: string
+ *                 enum: [cliente, prestador]
+ *                 example: cliente
+ *     responses:
+ *       201:
+ *         description: Usuário cadastrado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Token JWT gerado para o usuário
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       400:
+ *         description: Usuário já existe
+ *       500:
+ *         description: Erro no servidor
+ */
 router.post('/cadastro', async (req, res) => {
     const { nome, email, senha, tipo } = req.body;
 
@@ -39,7 +81,42 @@ router.post('/cadastro', async (req, res) => {
     }
 });
 
-// Rota de Login
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Faz login de um usuário
+ *     tags: [Autenticação]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: joao@example.com
+ *               senha:
+ *                 type: string
+ *                 example: 123456
+ *     responses:
+ *       200:
+ *         description: Login realizado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Token JWT gerado para o usuário
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       400:
+ *         description: Credenciais inválidas
+ *       500:
+ *         description: Erro no servidor
+ */
 router.post('/login', async (req, res) => {
     const { email, senha } = req.body;
 
